@@ -1,11 +1,102 @@
 import { Routes } from '@angular/router';
-import { EventoComponent } from './components/evento/evento.component';
-import { canDeactivateGuard } from './guards/can-deactivate.guard';
+import { Home } from './pages/public/home/home';
+import { Eventos } from './pages/public/eventos/eventos';
+import { Dashboard } from './pages/private/dashboard/dashboard'; 
+import { DashboardHome } from './pages/private/dashboard/dashboard-home/dashboard-home';
+import { ContentManagement } from './pages/private/content-management/content-management';
+import { ColaboradorComponent } from '@pages/private/colaborador/colaborador.component';
+import { authGuard } from './shared/guards/auth-guard';
+import { guestGuard } from './shared/guards/guest-guard';
+import { Usuario } from '@pages/private/usuario/usuario';
+import { Diario } from '@pages/private/diario/diario';
+import { UnidadesTurmas } from '@pages/private/unidades-turmas/unidades-turmas';
+import { Perfil } from '@pages/private/perfil/perfil';
 
 export const routes: Routes = [
-  {
-    path: 'eventos',
-    component: EventoComponent,
-    canDeactivate: [canDeactivateGuard]
-  }
+    { path: '', component: Home, canActivate: [guestGuard]},
+    { path: 'eventos', component: Eventos},
+    {
+        path: 'dashboard',
+        //loadComponent: () =>
+        //import('./features/backoffice-home/backoffice-home').then((m) => m.BackofficeHome),
+        canActivate: [authGuard],
+        component: Dashboard,
+        children: [
+            { path: '', component: DashboardHome },
+            { path: 'conteudo-publico', component: ContentManagement },
+            { path: 'conteudo-publico/:secao', component: ContentManagement },
+            { path: 'colaboradores', component: ColaboradorComponent},
+            { path: 'usuarios', component: Usuario},
+            { path: 'diario', component: Diario},
+            { path: 'unidades-turmas', component: UnidadesTurmas},
+            { path: 'perfil', component: Perfil}
+        ]
+    },
+    {
+        path: 'entrar',
+        canActivate: [guestGuard],
+        loadComponent: () => import('./pages/public/login/login').then((m) => m.Login),
+    },
+    {
+        path: 'recuperar-senha',
+        canActivate: [guestGuard],
+        loadComponent: () => import('./pages/public/recuperar-senha/recuperar-senha').then((m) => m.RecuperarSenha),
+    },
+    {
+        path: 'transparencia',
+        loadComponent: () => import('./pages/public/transparencia/transparencia').then((m) => m.Transparencia),
+    },
+    { path: '**', redirectTo: 'entrar' }
 ];
+
+
+
+
+
+    /*import { EventoComponent } from './components/evento/evento.component';
+    import { canDeactivateGuard } from './guards/can-deactivate.guard';
+
+    export const routes: Routes = [
+    {
+        path: 'eventos',
+        component: EventoComponent,
+        canDeactivate: [canDeactivateGuard]
+    }*/
+
+
+    /*import { AdminLayout } from './core/layout/admin-layout/admin-layout';
+    import { DashboardPage } from './features/dashboard/dashboard-page';
+    import { PublicContentPage } from './features/public-content/public-content-page';
+    import { PlaceholderPage } from './features/placeholder/placeholder-page';
+
+    export const routes: Routes = [
+    {
+        path: '',
+        component: AdminLayout,
+        children: [
+        { path: '', component: DashboardPage },
+        { path: 'conteudo-publico', component: PublicContentPage },
+        {
+            path: 'diario-do-turno',
+            component: PlaceholderPage,
+            data: { title: 'Diário do turno' },
+        },
+        {
+            path: 'gerenciar-cadastros',
+            component: PlaceholderPage,
+            data: { title: 'Gerenciar cadastros' },
+        },
+        {
+            path: 'gerenciar-voluntarios',
+            component: PlaceholderPage,
+            data: { title: 'Gerenciar voluntários' },
+        },
+        {
+            path: 'gerenciar-unidades-e-turmas',
+            component: PlaceholderPage,
+            data: { title: 'Gerenciar unidades e turmas' },
+        },
+        { path: '**', redirectTo: '' },
+        ],
+    },
+    ];*/

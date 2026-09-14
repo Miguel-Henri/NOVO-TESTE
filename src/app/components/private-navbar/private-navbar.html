@@ -1,0 +1,68 @@
+<nav class="navbar" [ngClass]="{'expandido': menuVisivel}">
+  <div class="navbar-header">
+    <button class="btn-menu" (click)="alternarMenu()" aria-label="Menu">
+      <span class="material-symbols-outlined">
+        {{ menuVisivel ? 'close' : 'menu' }}
+      </span>
+    </button>
+
+    <div class="logo-container">
+      <a routerLink="/dashboard">
+        <img src="/images/logo_branca_texto.png" alt="Logo Lar Escola Redenção">
+      </a>
+    </div>
+
+    <div class="nav-action">
+      <button
+        type="button"
+        class="btn-avatar"
+        (click)="alternarMenuUsuario()"
+        [attr.aria-expanded]="menuUsuarioAberto"
+        aria-label="Menu do usuário">
+        {{ iniciaisUsuario || '...' }}
+      </button>
+
+      <div class="menu-usuario" *ngIf="menuUsuarioAberto">
+        <button type="button" class="menu-usuario-item" (click)="irParaPerfil()">
+          <span class="material-symbols-outlined">person</span>
+          <span>Meu perfil</span>
+        </button>
+        <button type="button" class="menu-usuario-item menu-usuario-item--sair" (click)="sair()">
+          <span class="material-symbols-outlined">logout</span>
+          <span>Sair</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Painel de Gestão (Visível ao clicar no menu) -->
+  <div class="dropdown-panel" *ngIf="menuVisivel">
+    <div class="painel-content">
+      <h3 class="painel-titulo">CENTRAL DE GESTÃO</h3>
+      <div class="grid-opcoes">
+        <a class="card-opcao" routerLink="/dashboard/diario" routerLinkActive="ativo" (click)="alternarMenu()">
+          <span class="material-symbols-outlined">assignment</span>
+          <span class="texto-link">Diário de turma</span>
+        </a>
+        <a class="card-opcao" routerLink="/dashboard/usuarios" routerLinkActive="ativo" (click)="alternarMenu()">
+          <span class="material-symbols-outlined">sentiment_excited</span>
+          <span class="texto-link">Gerenciar usuários</span>
+        </a>
+        <a class="card-opcao" routerLink="/dashboard/colaboradores" routerLinkActive="ativo" (click)="alternarMenu()">
+          <span class="material-symbols-outlined">support_agent</span>
+          <span class="texto-link">Gerenciar colaboradores</span>
+        </a>
+        <a class="card-opcao" routerLink="/dashboard/unidades-turmas" routerLinkActive="ativo" (click)="alternarMenu()">
+          <span class="material-symbols-outlined">family_group</span>
+          <span class="texto-link">Gerenciar unidades e turmas</span>
+        </a>
+        <a class="card-opcao" routerLink="/dashboard/conteudo-publico" routerLinkActive="ativo" (click)="alternarMenu()">
+          <span class="material-symbols-outlined">captive_portal</span>
+          <span class="texto-link">Gerenciar conteúdo público</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="navbar-spacer"></div>
